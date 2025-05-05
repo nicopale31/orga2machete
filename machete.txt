@@ -1,0 +1,47 @@
+## 🧠 x86-64 Calling Convention (System V) – Resumen
+
+### ✅ Orden de parámetros en registros
+
+| Orden | Tipo de dato (entero/puntero) | Registro |
+|-------|-------------------------------|----------|
+| 1°    | entero/puntero                | `rdi`    |
+| 2°    | entero/puntero                | `rsi`    |
+| 3°    | entero/puntero                | `rdx`    |
+| 4°    | entero/puntero                | `rcx`    |
+| 5°    | entero/puntero                | `r8`     |
+| 6°    | entero/puntero                | `r9`     |
+
+> ⚠️ Argumentos adicionales se pasan por la pila (`stack`).
+
+---
+
+### 📏 Tamaños de registros (general purpose)
+
+| Tamaño | Registro                    | Descripción                  |
+|--------|-----------------------------|------------------------------|
+| 64-bit | `rax`, `rbx`, ..., `r15`    | Registro completo            |
+| 32-bit | `eax`, `ebx`, ..., `r15d`   | Parte baja de 64 bits        |
+| 16-bit | `ax`, `bx`, ..., `r15w`     | Parte baja de 32 bits        |
+| 8-bit  | `al`, `bl`, `dil`, ..., `r15b` | Parte baja de 16 bits     |
+
+> Ejemplo: `rdi` → `edi` → `di` → `dil`
+
+---
+
+### 🔁 Registros volátiles vs. no volátiles
+
+| Registro      | Tipo         | Descripción                                       |
+|---------------|--------------|---------------------------------------------------|
+| `rax`         | Volátil      | Retorna valores de funciones                     |
+| `rcx`, `rdx`  | Volátil      | Argumentos temporales                            |
+| `rsi`, `rdi`  | Volátil      | Argumentos                                        |
+| `r8`–`r11`    | Volátil      | Argumentos adicionales, temporales               |
+| `rbx`         | No volátil   | Preservado por el callee                         |
+| `rsp`         | No volátil   | Puntero de pila, debe mantenerse intacto         |
+| `rbp`         | No volátil   | Base del marco de pila (opcional)                |
+| `r12`–`r15`   | No volátil   | Callee-saved                                     |
+
+> 🔒 Los **no volátiles** deben ser restaurados por la función si son modificados.
+
+---
+
